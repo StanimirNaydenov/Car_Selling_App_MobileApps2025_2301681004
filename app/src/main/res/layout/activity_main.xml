@@ -56,21 +56,6 @@
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="40dp"
-                    android:src="@android:drawable/ic_popup_reminder" />
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@android:drawable/btn_star_big_off" />
             </RelativeLayout>
 
             <!-- Search Bar -->
