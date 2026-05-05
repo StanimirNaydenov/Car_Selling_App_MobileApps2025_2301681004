@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray_light">#F5F5F5</color>
     <color name="gray_text">#757575</color>
+    <color name="matrix_blue">#00B8D9</color>
 </resources>

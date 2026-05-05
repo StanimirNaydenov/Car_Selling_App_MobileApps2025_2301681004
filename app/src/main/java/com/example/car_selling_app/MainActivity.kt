@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.car_selling_app.data.Car
 import com.example.car_selling_app.data.CarViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,9 +35,23 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(cars)
         }
 
-        findViewById<FloatingActionButton>(R.id.fabAddCar).setOnClickListener {
-            val intent = Intent(this, AddCarActivity::class.java)
-            startActivity(intent)
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_add_car -> {
+                    val intent = Intent(this, AddCarActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_home -> {
+                    // Already on home
+                    true
+                }
+                else -> {
+                    // Handle other navigation items here
+                    true
+                }
+            }
         }
     }
 

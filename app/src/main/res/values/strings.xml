@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Car_Selling_App</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_liked">Liked</string>
+    <string name="nav_add">Add</string>
+    <string name="nav_inbox">Inbox</string>
+    <string name="nav_profile">Profile</string>
 </resources>
