@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 class CarViewModel(application: Application) : AndroidViewModel(application) {
     private val carDao = CarDatabase.getDatabase(application).carDao()
     val allCars: LiveData<List<Car>> = carDao.getAllCars().asLiveData()
+    val likedCars: LiveData<List<Car>> = carDao.getLikedCars().asLiveData()
 
     fun insert(car: Car) = viewModelScope.launch {
         carDao.insertCar(car)
@@ -14,6 +15,14 @@ class CarViewModel(application: Application) : AndroidViewModel(application) {
 
     fun update(car: Car) = viewModelScope.launch {
         carDao.updateCar(car)
+    }
+
+    fun updateLikedStatus(id: Int, isLiked: Boolean) = viewModelScope.launch {
+        carDao.updateLikedStatus(id, isLiked)
+    }
+
+    fun clearAllLiked() = viewModelScope.launch {
+        carDao.clearAllLiked()
     }
 
     fun delete(car: Car) = viewModelScope.launch {

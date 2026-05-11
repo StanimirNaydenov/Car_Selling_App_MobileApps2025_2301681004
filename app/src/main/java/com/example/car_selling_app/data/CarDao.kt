@@ -19,4 +19,13 @@ interface CarDao {
 
     @Query("SELECT * FROM cars WHERE id = :id")
     suspend fun getCarById(id: Int): Car?
+
+    @Query("SELECT * FROM cars WHERE isLiked = 1 ORDER BY id DESC")
+    fun getLikedCars(): Flow<List<Car>>
+
+    @Query("UPDATE cars SET isLiked = :isLiked WHERE id = :id")
+    suspend fun updateLikedStatus(id: Int, isLiked: Boolean)
+
+    @Query("UPDATE cars SET isLiked = 0")
+    suspend fun clearAllLiked()
 }

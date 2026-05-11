@@ -78,6 +78,15 @@
                 android:textColor="@color/gray_text"
                 android:textSize="13sp" />
 
+            <ImageView
+                android:id="@+id/imageViewLiked"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/liked_icon"
+                android:visibility="gone"
+                app:tint="@color/matrix_blue" />
+
         </LinearLayout>
 
         <com.google.android.material.imageview.ShapeableImageView

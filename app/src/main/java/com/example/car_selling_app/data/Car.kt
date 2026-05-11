@@ -16,5 +16,6 @@ data class Car(
     val transmission: String,
     val location: String,
     val horsepower: Int,
-    val imagePaths: String // Store as comma-separated strings or JSON
+    val imagePaths: String, // Store as comma-separated strings or JSON
+    val isLiked: Boolean = false
 )

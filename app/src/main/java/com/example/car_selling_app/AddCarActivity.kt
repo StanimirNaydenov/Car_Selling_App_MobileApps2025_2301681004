@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.car_selling_app.data.Car
 import com.example.car_selling_app.data.CarViewModel
@@ -21,16 +20,18 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.UUID
 
-class AddCarActivity : AppCompatActivity() {
+class AddCarActivity : BaseActivity() {
 
     private val viewModel: CarViewModel by viewModels()
     private var selectedImageUris: List<Uri> = emptyList()
     private var editingCarId: Int = -1
     private var existingImagePaths: String = ""
+    private var isCurrentlyLiked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_car)
+        setupCommonUI()
 
         val titleView = findViewById<TextView>(R.id.textViewTitle)
         val editMake = findViewById<EditText>(R.id.editTextMake)
@@ -84,6 +85,7 @@ class AddCarActivity : AppCompatActivity() {
                     spinnerEngine.setText(it.engineType, false)
                     spinnerTransmission.setText(it.transmission, false)
                     existingImagePaths = it.imagePaths
+                    isCurrentlyLiked = it.isLiked
                     if (existingImagePaths.isNotEmpty()) {
                         buttonAddPhotos.text = "Keep existing photos (${existingImagePaths.split(",").size})"
                     }
@@ -142,7 +144,8 @@ class AddCarActivity : AppCompatActivity() {
                 engineType = spinnerEngine.text.toString(),
                 transmission = spinnerTransmission.text.toString(),
                 description = editDescription.text.toString(),
-                imagePaths = finalImagePaths
+                imagePaths = finalImagePaths,
+                isLiked = isCurrentlyLiked
             )
             
             if (editingCarId != -1) {

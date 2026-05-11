@@ -41,6 +41,7 @@ class CarAdapter(
         private val yearEngine: TextView = itemView.findViewById(R.id.textViewYearEngine)
         private val location: TextView = itemView.findViewById(R.id.textViewLocation)
         private val carImage: ImageView = itemView.findViewById(R.id.imageViewCar)
+        private val likedImage: ImageView = itemView.findViewById(R.id.imageViewLiked)
 
         fun bind(car: Car) {
             makeModel.text = "${car.make} ${car.model}"
@@ -54,6 +55,8 @@ class CarAdapter(
             
             yearEngine.text = "${car.year} г., ${car.engineType}"
             location.text = car.location
+            
+            likedImage.visibility = if (car.isLiked) View.VISIBLE else View.GONE
             
             // Load the first image from the paths
             val firstImagePath = car.imagePaths.split(",").firstOrNull { it.isNotEmpty() }

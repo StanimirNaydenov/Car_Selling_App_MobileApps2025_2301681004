@@ -4,19 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import android.widget.Toast
 import com.example.car_selling_app.data.Car
 import com.example.car_selling_app.data.CarViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private val viewModel: CarViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setupCommonUI()
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewCars)
         val adapter = CarAdapter(
@@ -35,24 +36,30 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(cars)
         }
 
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
-        bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_add_car -> {
-                    val intent = Intent(this, AddCarActivity::class.java)
-                    startActivity(intent)
-                    true
+        // Swipe to like/unlike
+        val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(rv: RecyclerView, vh: RecyclerView.ViewHolder, t: RecyclerView.ViewHolder): Boolean = false
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val car = adapter.currentList[position]
+                    val newLikedStatus = !car.isLiked
+                    
+                    // 1. Update database
+                    viewModel.updateLikedStatus(car.id, newLikedStatus)
+                    
+                    // 2. Show toast
+                    val message = if (newLikedStatus) "Добавено в любими" else "Премахнато от любими"
+                    Toast.makeText(this@MainActivity, "${car.make} $message", Toast.LENGTH_SHORT).show()
                 }
-                R.id.nav_home -> {
-                    // Already on home
-                    true
-                }
-                else -> {
-                    // Handle other navigation items here
-                    true
+                
+                // 3. FORCE RESET
+                recyclerView.post {
+                    adapter.notifyItemChanged(position)
                 }
             }
         }
+        ItemTouchHelper(swipeHandler).attachToRecyclerView(recyclerView)
     }
 
     private fun showOptionsDialog(car: Car) {
