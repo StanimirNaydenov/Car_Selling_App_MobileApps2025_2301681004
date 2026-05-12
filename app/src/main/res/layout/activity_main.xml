@@ -67,26 +67,19 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="16dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Special Offers"
+                    android:gravity="center"
+                    android:text="Welcome to CarMatrix"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="See All"
-                    android:textColor="@color/black"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
             </RelativeLayout>
 
-            <!-- Special Offer Card -->
+            <!-- Welcome Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
@@ -108,15 +101,15 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="20%"
+                            android:text="Sell Your Car!"
                             android:textColor="@color/black"
-                            android:textSize="32sp"
+                            android:textSize="24sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Week Deals!"
+                            android:text="Fast &amp; Easy"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -125,7 +118,7 @@
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Get a new car discount, only valid this week"
+                            android:text="Create an ad in minutes and reach thousands of buyers instantly."
                             android:textColor="@color/gray_text"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -341,8 +334,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
+        app:itemIconTint="@color/nav_item_color"
+        app:itemTextColor="@color/nav_item_color"
+        app:itemRippleColor="@color/matrix_blue"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu" />
