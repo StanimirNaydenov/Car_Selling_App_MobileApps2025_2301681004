@@ -6,7 +6,7 @@
         android:title="@string/nav_home" />
     <item
         android:id="@+id/nav_liked"
-        android:icon="@drawable/liked_icon"
+        android:icon="@drawable/ic_star"
         android:title="@string/nav_liked" />
     <item
         android:id="@+id/nav_add_car"

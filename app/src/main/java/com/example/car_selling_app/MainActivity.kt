@@ -22,7 +22,7 @@ class MainActivity : BaseActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewCars)
         val adapter = CarAdapter(
             onItemClicked = { car ->
-                val intent = Intent(this, AddCarActivity::class.java)
+                val intent = Intent(this, CarDetailActivity::class.java)
                 intent.putExtra("EXTRA_CAR_ID", car.id)
                 startActivity(intent)
             },
@@ -63,13 +63,18 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showOptionsDialog(car: Car) {
-        val options = arrayOf("Share", "Delete")
+        val options = arrayOf("Edit", "Share", "Delete")
         AlertDialog.Builder(this)
             .setTitle("Options")
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> shareCar(car)
-                    1 -> showDeleteDialog(car)
+                    0 -> {
+                        val intent = Intent(this, AddCarActivity::class.java)
+                        intent.putExtra("EXTRA_CAR_ID", car.id)
+                        startActivity(intent)
+                    }
+                    1 -> shareCar(car)
+                    2 -> showDeleteDialog(car)
                 }
             }
             .show()
