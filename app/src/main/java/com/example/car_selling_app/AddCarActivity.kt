@@ -60,10 +60,10 @@ class AddCarActivity : BaseActivity() {
         val buttonSave = findViewById<Button>(R.id.buttonSave)
 
         // Setup Spinners
-        val engines = arrayOf("Дизел", "Бензин", "Хибрид", "Електричество")
+        val engines = arrayOf("Diesel", "Petrol", "Hybrid", "Electric")
         spinnerEngine.setAdapter(ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, engines))
 
-        val transmissions = arrayOf("Автоматик", "Ръчни скорости")
+        val transmissions = arrayOf("Automatic", "Manual")
         spinnerTransmission.setAdapter(ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, transmissions))
 
         // Check if we are editing
@@ -97,7 +97,7 @@ class AddCarActivity : BaseActivity() {
         val pickMultipleMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
             if (uris.isNotEmpty()) {
                 selectedImageUris = uris
-                buttonAddPhotos.text = "Снимки: ${uris.size} избрани"
+                buttonAddPhotos.text = "Photos: ${uris.size} selected"
             }
         }
 

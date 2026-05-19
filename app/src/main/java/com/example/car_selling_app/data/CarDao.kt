@@ -28,4 +28,7 @@ interface CarDao {
 
     @Query("UPDATE cars SET isLiked = 0")
     suspend fun clearAllLiked()
+
+    @Query("SELECT * FROM cars WHERE make = :make ORDER BY id DESC")
+    fun getCarsByMake(make: String): Flow<List<Car>>
 }

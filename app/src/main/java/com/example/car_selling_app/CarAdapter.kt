@@ -37,7 +37,6 @@ class CarAdapter(
         private val makeModel: TextView = itemView.findViewById(R.id.textViewMakeModel)
         private val specs: TextView = itemView.findViewById(R.id.textViewSpecs)
         private val priceEUR: TextView = itemView.findViewById(R.id.textViewPriceEUR)
-        private val priceBGN: TextView = itemView.findViewById(R.id.textViewPriceBGN)
         private val yearEngine: TextView = itemView.findViewById(R.id.textViewYearEngine)
         private val location: TextView = itemView.findViewById(R.id.textViewLocation)
         private val carImage: ImageView = itemView.findViewById(R.id.imageViewCar)
@@ -45,15 +44,13 @@ class CarAdapter(
 
         fun bind(car: Car) {
             makeModel.text = "${car.make} ${car.model}"
-            specs.text = "${car.mileage} км / ${car.horsepower} HP / ${car.transmission}"
+            specs.text = "${car.mileage} km / ${car.horsepower} HP / ${car.transmission}"
             
             val priceEur = car.price
-            val priceBgn = priceEur * 1.95583
             
             priceEUR.text = String.format("%.0f €", priceEur)
-            priceBGN.text = String.format("%.2f лв.", priceBgn)
             
-            yearEngine.text = "${car.year} г., ${car.engineType}"
+            yearEngine.text = "${car.year}, ${car.engineType}"
             location.text = car.location
             
             likedImage.visibility = if (car.isLiked) View.VISIBLE else View.GONE

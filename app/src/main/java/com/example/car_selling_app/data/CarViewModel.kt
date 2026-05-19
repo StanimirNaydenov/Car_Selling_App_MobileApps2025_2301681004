@@ -25,6 +25,10 @@ class CarViewModel(application: Application) : AndroidViewModel(application) {
         carDao.clearAllLiked()
     }
 
+    fun getCarsByMake(make: String): LiveData<List<Car>> {
+        return carDao.getCarsByMake(make).asLiveData()
+    }
+
     fun delete(car: Car) = viewModelScope.launch {
         carDao.deleteCar(car)
     }

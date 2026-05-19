@@ -72,7 +72,7 @@ class CarDetailActivity : BaseActivity() {
             currentCar = currentCar?.copy(isLiked = newStatus)
             viewModel.updateLikedStatus(car.id, newStatus)
             updateLikeButtonUI(newStatus)
-            val msg = if (newStatus) "Добавено в любими" else "Премахнато от любими"
+            val msg = if (newStatus) "Added to favorites" else "Removed from favorites"
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
 

@@ -42,6 +42,9 @@ abstract class BaseActivity : AppCompatActivity() {
                         if (this !is MainActivity) {
                             startActivity(Intent(this, MainActivity::class.java))
                             if (this !is AddCarActivity) finish()
+                        } else {
+                            // If we are already in MainActivity, reset the filter to show all cars
+                            (this as MainActivity).resetToAllCars()
                         }
                         true
                     }

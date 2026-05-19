@@ -2,17 +2,22 @@ package com.example.car_selling_app
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.Toast
 import com.example.car_selling_app.data.Car
 import com.example.car_selling_app.data.CarViewModel
 
 class MainActivity : BaseActivity() {
 
     private val viewModel: CarViewModel by viewModels()
+    private var activeCarsLiveData: LiveData<List<Car>>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +37,10 @@ class MainActivity : BaseActivity() {
         )
         recyclerView.adapter = adapter
 
-        viewModel.allCars.observe(this) { cars ->
-            adapter.submitList(cars)
-        }
+        // Initial observation: All cars
+        observeCars(viewModel.allCars)
+
+        setupBrandFilters()
 
         // Swipe to like/unlike
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -42,24 +48,57 @@ class MainActivity : BaseActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val car = adapter.currentList[position]
-                    val newLikedStatus = !car.isLiked
-                    
-                    // 1. Update database
-                    viewModel.updateLikedStatus(car.id, newLikedStatus)
-                    
-                    // 2. Show toast
-                    val message = if (newLikedStatus) "Добавено в любими" else "Премахнато от любими"
-                    Toast.makeText(this@MainActivity, "${car.make} $message", Toast.LENGTH_SHORT).show()
+                    val currentList = (recyclerView.adapter as CarAdapter).currentList
+                    if (position < currentList.size) {
+                        val car = currentList[position]
+                        val newLikedStatus = !car.isLiked
+                        
+                        // Update database
+                        viewModel.updateLikedStatus(car.id, newLikedStatus)
+                        
+                        val message = if (newLikedStatus) "Added to favorites" else "Removed from favorites"
+                        Toast.makeText(this@MainActivity, "${car.make} $message", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 
-                // 3. FORCE RESET
+                // CRITICAL: Always notify changed to bring the item back from swiped state
+                // We do it with a small delay or post to let ItemTouchHelper finish its animation
                 recyclerView.post {
-                    adapter.notifyItemChanged(position)
+                    recyclerView.adapter?.notifyItemChanged(position)
                 }
             }
         }
         ItemTouchHelper(swipeHandler).attachToRecyclerView(recyclerView)
+    }
+
+    private fun observeCars(liveData: LiveData<List<Car>>) {
+        val adapter = findViewById<RecyclerView>(R.id.recyclerViewCars).adapter as CarAdapter
+        
+        // Remove previous observer to avoid multiple refreshes and "disappearing" items
+        activeCarsLiveData?.removeObservers(this)
+        activeCarsLiveData = liveData
+        
+        activeCarsLiveData?.observe(this) { cars ->
+            adapter.submitList(cars) {
+                updateNoCarsVisibility(cars.isEmpty())
+            }
+        }
+    }
+
+    private fun setupBrandFilters() {
+        findViewById<LinearLayout>(R.id.brandMercedes).setOnClickListener { observeCars(viewModel.getCarsByMake("Mercedes")) }
+        findViewById<LinearLayout>(R.id.brandBMW).setOnClickListener { observeCars(viewModel.getCarsByMake("BMW")) }
+        findViewById<LinearLayout>(R.id.brandAudi).setOnClickListener { observeCars(viewModel.getCarsByMake("Audi")) }
+        findViewById<LinearLayout>(R.id.brandToyota).setOnClickListener { observeCars(viewModel.getCarsByMake("Toyota")) }
+    }
+
+    private fun updateNoCarsVisibility(isEmpty: Boolean) {
+        val noCarsText = findViewById<TextView>(R.id.textViewNoCarsFound)
+        noCarsText.visibility = if (isEmpty) View.VISIBLE else View.GONE
+    }
+
+    fun resetToAllCars() {
+        observeCars(viewModel.allCars)
     }
 
     private fun showOptionsDialog(car: Car) {

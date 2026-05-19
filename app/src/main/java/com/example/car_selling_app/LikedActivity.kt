@@ -50,7 +50,7 @@ class LikedActivity : BaseActivity() {
                 if (position != RecyclerView.NO_POSITION) {
                     val car = adapter.currentList[position]
                     viewModel.updateLikedStatus(car.id, false)
-                    Toast.makeText(this@LikedActivity, "${car.make} премахната от любими", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LikedActivity, "${car.make} removed from favorites", Toast.LENGTH_SHORT).show()
                 }
             }
         }
