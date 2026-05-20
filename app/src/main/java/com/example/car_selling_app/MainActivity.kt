@@ -71,8 +71,13 @@ class MainActivity : BaseActivity() {
         ItemTouchHelper(swipeHandler).attachToRecyclerView(recyclerView)
     }
 
-    private fun observeCars(liveData: LiveData<List<Car>>) {
+    private fun observeCars(liveData: LiveData<List<Car>>, title: String = "Top Deals") {
         val adapter = findViewById<RecyclerView>(R.id.recyclerViewCars).adapter as CarAdapter
+        val titleTextView = findViewById<TextView>(R.id.textViewListTitle)
+        val seeAllTextView = findViewById<TextView>(R.id.textViewSeeAll)
+        
+        titleTextView.text = title
+        seeAllTextView.visibility = if (title == "Top Deals") View.VISIBLE else View.GONE
         
         // Remove previous observer to avoid multiple refreshes and "disappearing" items
         activeCarsLiveData?.removeObservers(this)
@@ -86,10 +91,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupBrandFilters() {
-        findViewById<LinearLayout>(R.id.brandMercedes).setOnClickListener { observeCars(viewModel.getCarsByMake("Mercedes")) }
-        findViewById<LinearLayout>(R.id.brandBMW).setOnClickListener { observeCars(viewModel.getCarsByMake("BMW")) }
-        findViewById<LinearLayout>(R.id.brandAudi).setOnClickListener { observeCars(viewModel.getCarsByMake("Audi")) }
-        findViewById<LinearLayout>(R.id.brandToyota).setOnClickListener { observeCars(viewModel.getCarsByMake("Toyota")) }
+        findViewById<LinearLayout>(R.id.brandMercedes).setOnClickListener { observeCars(viewModel.getCarsByMake("Mercedes"), "Mercedes") }
+        findViewById<LinearLayout>(R.id.brandBMW).setOnClickListener { observeCars(viewModel.getCarsByMake("BMW"), "BMW") }
+        findViewById<LinearLayout>(R.id.brandAudi).setOnClickListener { observeCars(viewModel.getCarsByMake("Audi"), "Audi") }
+        findViewById<LinearLayout>(R.id.brandToyota).setOnClickListener { observeCars(viewModel.getCarsByMake("Toyota"), "Toyota") }
     }
 
     private fun updateNoCarsVisibility(isEmpty: Boolean) {

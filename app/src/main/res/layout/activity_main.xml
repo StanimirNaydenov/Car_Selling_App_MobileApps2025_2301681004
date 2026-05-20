@@ -277,6 +277,7 @@
                 android:layout_marginBottom="12dp">
 
                 <TextView
+                    android:id="@+id/textViewListTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Top Deals"
@@ -285,6 +286,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/textViewSeeAll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
