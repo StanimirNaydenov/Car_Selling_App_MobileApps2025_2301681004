@@ -62,6 +62,40 @@ The CarMatrix is an advanced Android-based application used for buying and selli
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
+<h1>Application architecture</h1>
+
+The application follows the MVVM (Model-View-ViewModel) architectural pattern for clean logic and easy maintenance:
+
+<h2>Data Layer (Model)</h2>
+
+•Entity – Car.kt: Defines the structure of the car (make, model, year, price, power, mileage, engine type, gearbox, photos and "liked" status).
+
+•DAO – CarDao.kt: Contains the SQL queries for working with the database, including methods for filtering by make (getCarsByMake) and managing favorite cars.
+
+•Database – CarDatabase.kt: Singleton instance of Room DB (Version 3), ensuring data persistence.
+
+<h2>ViewModel Layer</h2>
+
+•CarViewModel.kt: Mediator between the database and the interface.
+
+◦Uses viewModelScope for asynchronous operations (write/delete) to avoid "freezing" the application.
+
+◦Provides LiveData objects (allCars, likedCars), which automatically refresh the screen when the data changes.
+
+<h2>UI layer (View)</h2>
+
+The application is organized through Activities that inherit BaseActivity for shared header and navigation:
+
+•SplashActivity: Home screen with branded logo (4 seconds).
+
+•MainActivity: Central screen with a list of cars, dynamic filtering by brand (Mercedes, BMW, etc.) and a swipe to like gesture.
+
+•CarDetailActivity: Detailed view with interactive gallery (ViewPager2), technical data and quick action buttons (Call/Share).
+
+•AddCarActivity: Universal form for adding new and editing existing ads with attaching up to 5 photos.
+
+•LikedActivity: List of only the cars liked by the user.
+
 <h1>Database Schema</h1>
 
 The app uses a single-table cars schema:
@@ -75,6 +109,17 @@ The app uses a single-table cars schema:
 • imagePaths: Comma-separated internal storage paths.
 
 • isLiked: Boolean flag for favorites.
+
+<h2>Data table (Cars)</h2>
+
+| Column | Type | Description |
+|---------|------|-----------|
+| id | INTEGER | Automatic primary key |
+| make | TEXT | Brand (Mercedes, BMW, Audi, etc.) |
+| model | TEXT | Car model |
+| price | REAL | Car price in Euro (€) |
+| imagePaths | TEXT | List of paths to photos (comma separated) |
+| isLiked | INTEGER | Favorites status (0 or 1) |
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
