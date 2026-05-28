@@ -133,6 +133,10 @@ The app uses a single-table cars schema:
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
+<h1> For download</h1>
+<h2> Only for Android devices</h2>
+[Download APK] (https://github.com/StanimirNaydenov/Car_Selling_App_MobileApps2025_2301681004/releases/tag/v1.0)
+
 <h1>Screenshots</h1>
 
 <h2>Splash Screen</h2>
