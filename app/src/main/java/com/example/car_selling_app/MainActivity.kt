@@ -48,23 +48,20 @@ class MainActivity : BaseActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val currentList = (recyclerView.adapter as CarAdapter).currentList
-                    if (position < currentList.size) {
-                        val car = currentList[position]
-                        val newLikedStatus = !car.isLiked
-                        
-                        // Update database
-                        viewModel.updateLikedStatus(car.id, newLikedStatus)
-                        
-                        val message = if (newLikedStatus) "Added to favorites" else "Removed from favorites"
-                        Toast.makeText(this@MainActivity, "${car.make} $message", Toast.LENGTH_SHORT).show()
-                    }
+                    val car = adapter.currentList[position]
+                    val newLikedStatus = !car.isLiked
+
+                    // Update data base
+                    viewModel.updateLikedStatus(car.id, newLikedStatus)
+
+                    val message = if (newLikedStatus) "Added to favorites" else "Removed from favorites"
+                    Toast.makeText(this@MainActivity, "${car.make} $message", Toast.LENGTH_SHORT).show()
                 }
-                
-                // CRITICAL: Always notify changed to bring the item back from swiped state
-                // We do it with a small delay or post to let ItemTouchHelper finish its animation
+
+
+                // to force RecyclerView to return the object to its place.
                 recyclerView.post {
-                    recyclerView.adapter?.notifyItemChanged(position)
+                    adapter.notifyItemChanged(position)
                 }
             }
         }
@@ -75,14 +72,14 @@ class MainActivity : BaseActivity() {
         val adapter = findViewById<RecyclerView>(R.id.recyclerViewCars).adapter as CarAdapter
         val titleTextView = findViewById<TextView>(R.id.textViewListTitle)
         val seeAllTextView = findViewById<TextView>(R.id.textViewSeeAll)
-        
+
         titleTextView.text = title
         seeAllTextView.visibility = if (title == "Top Deals") View.VISIBLE else View.GONE
-        
+
         // Remove previous observer to avoid multiple refreshes and "disappearing" items
         activeCarsLiveData?.removeObservers(this)
         activeCarsLiveData = liveData
-        
+
         activeCarsLiveData?.observe(this) { cars ->
             adapter.submitList(cars) {
                 updateNoCarsVisibility(cars.isEmpty())
