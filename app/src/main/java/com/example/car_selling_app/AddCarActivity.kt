@@ -71,6 +71,7 @@ class AddCarActivity : BaseActivity() {
         }
         editMake.filters = arrayOf(alphanumericFilter, InputFilter.LengthFilter(10))
         editModel.filters = arrayOf(alphanumericFilter, InputFilter.LengthFilter(10))
+        editLocation.filters = arrayOf(alphanumericFilter)
 
         // Setup Spinners
         val engines = arrayOf("Diesel", "Petrol", "Hybrid", "Electric")
