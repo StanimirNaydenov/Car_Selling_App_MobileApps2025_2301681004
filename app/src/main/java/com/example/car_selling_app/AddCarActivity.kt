@@ -2,6 +2,7 @@ package com.example.car_selling_app
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputFilter
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -58,6 +59,18 @@ class AddCarActivity : BaseActivity() {
         
         val buttonAddPhotos = findViewById<Button>(R.id.buttonAddPhotos)
         val buttonSave = findViewById<Button>(R.id.buttonSave)
+
+        // Filter to allow only letters, digits and spaces
+        val alphanumericFilter = InputFilter { source, start, end, _, _, _ ->
+            for (i in start until end) {
+                if (!Character.isLetterOrDigit(source[i]) && source[i] != ' ') {
+                    return@InputFilter ""
+                }
+            }
+            null
+        }
+        editMake.filters = arrayOf(alphanumericFilter, InputFilter.LengthFilter(10))
+        editModel.filters = arrayOf(alphanumericFilter, InputFilter.LengthFilter(10))
 
         // Setup Spinners
         val engines = arrayOf("Diesel", "Petrol", "Hybrid", "Electric")
